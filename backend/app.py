@@ -28,6 +28,10 @@ song_cluster_pipeline = Pipeline([('scaler', StandardScaler()),
                                   ('kmeans', KMeans(n_clusters=20, verbose=False))], 
                                   verbose=False)
 
+@app.route('/filter/')
+def filter():
+    return []
+
 #Takes in a query param of the term
 @app.route('/filter/<term>')
 def filter_csv(term):
@@ -119,7 +123,7 @@ def recommend_songs():
     return jsonify(rec_songs[metadata_cols].to_dict(orient='records'))
 
 #####################################################################################
-# start of helper functions:
+#! NEED TO MOVE TO SEPARATE FILE: start of helper functions: 
 # this finds a song
 def find_song(name, year):
     song_data = defaultdict()
