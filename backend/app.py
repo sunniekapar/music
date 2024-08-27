@@ -39,6 +39,7 @@ def filter_csv(term):
     file_path = os.path.join(os.path.dirname(__file__), './data/data.csv')
 
     data = pd.read_csv(file_path)
+    data = data.drop(columns=['release_date', 'Unnamed:0'])
 
     words = term.lower().split()
 

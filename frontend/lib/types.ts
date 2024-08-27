@@ -1,0 +1,21 @@
+export type Song = {
+  id: string,
+  name: string,
+  image: string,
+  artists: Array<string>,
+  valence: number,
+  acousticness: number,
+  danceability: number,
+  duration_ms: number,
+  energy: number,
+  explicit: number,
+  instrumentalness: number,
+  key: number,
+  liveness: number,
+  loudness: number,
+  mode: number,
+  popularity: number,
+  speechiness: number,
+  year: number
+  tempo: number,
+}

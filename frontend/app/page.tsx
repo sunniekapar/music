@@ -1,7 +1,10 @@
+import LoadingIndicator from '@/components/loading-indicator';
 import SearchBar from '@/components/search-bar';
+import SelectedSongs from '@/components/selected-songs';
 import SongResults from '@/components/song-results';
-import { MoreHorizontal } from 'lucide-react';
 import { Suspense } from 'react';
+
+// If suspense boundary doesnt work in prod, then maybe make this a dynamic route
 
 export default function Home({
   searchParams,
@@ -9,23 +12,19 @@ export default function Home({
   searchParams?: { query: string };
 }) {
   return (
-    <main className="container pt-12">
-      <div className="relative max-w-md mx-auto">
-        <SearchBar />
-        {/* This suspense boundary is not working for some reason */}
-        <div className="absolute top-12 w-full">
-          <Suspense
-            key={searchParams?.query}
-            fallback={
-              <div className="flex justify-center py-2">
-                <MoreHorizontal className="animate-pulse" />
-              </div>
-            }
-          >
-            <SongResults params={searchParams} />
-          </Suspense>
+    <>
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(63,63,70,0.3),rgba(0,0,0,0))]" />
+      <main className="container pt-12">
+        <div className="relative max-w-md mx-auto">
+          <SearchBar />
+          <div className="absolute top-12 w-full">
+            <Suspense key={searchParams?.query} fallback={<LoadingIndicator />}>
+              <SongResults params={searchParams} />
+            </Suspense>
+          </div>
+          <SelectedSongs />
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

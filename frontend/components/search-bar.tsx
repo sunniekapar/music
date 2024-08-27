@@ -32,7 +32,7 @@ export default function SearchBar() {
         type="text"
         value={value as string}
         onChange={(value) => handleChange(value as string)}
-        className="pl-8"
+        className="pl-8 bg-background/60 backdrop-blur-md"
       />
       <Search className="opacity-50 size-4 absolute left-2 top-0 translate-y-1/2 mt-1" />
     </div>
