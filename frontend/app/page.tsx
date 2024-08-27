@@ -1,36 +1,30 @@
 import SearchBar from '@/components/search-bar';
 import SongResults from '@/components/song-results';
+import { MoreHorizontal } from 'lucide-react';
 import { Suspense } from 'react';
 
-export default async function Home({
+export default function Home({
   searchParams,
 }: {
   searchParams?: { query: string };
 }) {
-  const value = searchParams?.query ?? '';
-
-  const response = await fetch(`http://localhost:5000/filter/${value}`);
-
-  const data = await response.json();
-
-  //! Keep this temporary and we will implement this into the data-access
-  const formattedData = data.map((song: any) => {
-    song.artists = JSON.parse(song.artists.replace(/'/g, '"'));
-    return song;
-  });
-
   return (
     <main className="container pt-12">
       <div className="relative max-w-md mx-auto">
         <SearchBar />
-        {/* Should I move the logic of when to show results / no results / nothing into the component? */}
-        {data.length !== 0 && !!value ? (
-          <div className="absolute top-12 w-full">
-            <Suspense fallback={<>Loading...</>}>
-              <SongResults data={formattedData} />
-            </Suspense>
-          </div>
-        ) : null}
+        {/* This suspense boundary is not working for some reason */}
+        <div className="absolute top-12 w-full">
+          <Suspense
+            key={searchParams?.query}
+            fallback={
+              <div className="flex justify-center py-2">
+                <MoreHorizontal className="animate-pulse" />
+              </div>
+            }
+          >
+            <SongResults params={searchParams} />
+          </Suspense>
+        </div>
       </div>
     </main>
   );
