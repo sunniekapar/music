@@ -28,6 +28,10 @@ song_cluster_pipeline = Pipeline([('scaler', StandardScaler()),
                                   ('kmeans', KMeans(n_clusters=20, verbose=False))], 
                                   verbose=False)
 
+@app.route('/filter/')
+def filter():
+    return []
+
 #Takes in a query param of the term
 @app.route('/filter/<term>')
 def filter_csv(term):
@@ -59,7 +63,6 @@ def filter_csv(term):
 def test(artist):
     return literal_eval(artist)
 
-#TODO: Need to test this when we get the keys
 @app.route('/song-url/<song>')
 def get_song_url(song):
     if not song:
@@ -82,7 +85,6 @@ def get_song_url(song):
     
     return jsonify({'name': track_name, 'url': track_url})
 
-#! Pretty sure something may be wrong here, dont know what but I am getting an error
 @app.route('/recommend', methods=['POST'])
 def recommend_songs():
     file_path = os.path.join(os.path.dirname(__file__), './data/data.csv')
@@ -95,8 +97,8 @@ def recommend_songs():
 
     if not isinstance(songs, list) or not all(isinstance(song, dict) for song in songs):
         return jsonify({"error": "Invalid data format"}), 400
+    print("PASS TEST")
 
-    #! The error is in this line
     song_center = get_mean_vector(songs, data)
     song_center_df = pd.DataFrame(song_center.reshape(1, -1), columns=number_cols)
 
@@ -115,11 +117,11 @@ def recommend_songs():
     index = list(np.argsort(distances)[:, :num_songs][0])
     
     rec_songs = data.iloc[index]
-    rec_songs = rec_songs[~rec_songs['name'].isin(song_dict['name'])]
+    rec_songs = rec_songs[~rec_songs['id'].isin(song_dict['id'])]
     return jsonify(rec_songs[metadata_cols].to_dict(orient='records'))
 
 #####################################################################################
-# start of helper functions:
+#! NEED TO MOVE TO SEPARATE FILE: start of helper functions: 
 # this finds a song
 def find_song(name, year):
     song_data = defaultdict()
@@ -146,8 +148,8 @@ def find_song(name, year):
 def get_song_data(song, spotify_data):
     
     try:
-        song_data = spotify_data[(spotify_data['name'] == song['name']) 
-                                & (spotify_data['year'] == song['year'])].iloc[0]
+        song_data = spotify_data[(spotify_data['id'] == song['id'])].iloc[0]
+        print(song_data)
         return song_data
     
     except IndexError:
