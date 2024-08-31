@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Song } from '@/lib/types';
-import { createContext, useState } from 'react';
+import { Song } from "@/lib/types";
+import { createContext, useState } from "react";
 
 type SongProviderState = {
   selectedSongs: Record<string, Song>;
@@ -16,7 +16,9 @@ const initialState: SongProviderState = {
 export const SongContext = createContext<SongProviderState>(initialState);
 
 export function SongProvider({ children }: { children: React.ReactNode }) {
-  const [selectedSongs, setSelectedSongs] = useState<Record<string, Song>>(() => ({}));
+  const [selectedSongs, setSelectedSongs] = useState<Record<string, Song>>(
+    () => ({}),
+  );
 
   const handleAddRemoveSong = (song: Song) => {
     setSelectedSongs((prev) => {
@@ -31,7 +33,9 @@ export function SongProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <SongContext.Provider value={{ selectedSongs, selectSong: handleAddRemoveSong }}>
+    <SongContext.Provider
+      value={{ selectedSongs, selectSong: handleAddRemoveSong }}
+    >
       {children}
     </SongContext.Provider>
   );

@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import DebouncedInput from '@/components/debounced-input';
-import { Search } from 'lucide-react';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import DebouncedInput from "@/components/debounced-input";
+import { Search } from "lucide-react";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function SearchBar() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const handleChange = (input: string) => {
     const params = new URLSearchParams(searchParams);
     if (input) {
-      params.set('query', input);
+      params.set("query", input);
     } else {
-      params.delete('query');
+      params.delete("query");
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -32,9 +32,9 @@ export default function SearchBar() {
         type="text"
         value={value as string}
         onChange={(value) => handleChange(value as string)}
-        className="pl-8 bg-background/60 backdrop-blur-md"
+        className="bg-background/60 pl-8 backdrop-blur-md"
       />
-      <Search className="opacity-50 size-4 absolute left-2 top-0 translate-y-1/2 mt-1" />
+      <Search className="absolute left-2 top-0 mt-1 size-4 translate-y-1/2 opacity-50" />
     </div>
   );
 }

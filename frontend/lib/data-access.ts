@@ -6,7 +6,7 @@ export async function fetchSongs(songName: string) {
     try {
       song.artists = JSON.parse(song.artists.replace(/'/g, '"'));
     } catch (error) {
-      console.error('Invalid JSON format for artists:', song.artists, error);
+      console.error("Invalid JSON format for artists:", song.artists, error);
       song.artists = [];
     }
     return song;
